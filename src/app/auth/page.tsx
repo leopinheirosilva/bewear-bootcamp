@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import SignInForm from "./components/sign-in-form";
+import SignUpForm from "./components/sign-up-form";
 
 const Authentication = async () => {
   return (
@@ -9,9 +10,13 @@ const Authentication = async () => {
         <Tabs defaultValue="sign-in">
           <TabsList>
             <TabsTrigger value="sign-in">Entrar</TabsTrigger>
+            <TabsTrigger value="sign-up">Criar Conta</TabsTrigger>
           </TabsList>
           <TabsContent value="sign-in" className="w-full">
             <SignInForm />
+          </TabsContent>
+          <TabsContent value="sign-up" className="w-full">
+            <SignUpForm />
           </TabsContent>
         </Tabs>
       </div>
