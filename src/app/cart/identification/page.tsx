@@ -21,7 +21,15 @@ const IdentificationPage = async () => {
     where: (cart, { eq }) => eq(cart.userId, session.user.id),
     with: {
       shippingAddress: true,
-      items: true,
+      items: {
+        with: {
+          productVariant: {
+            with: {
+              product: true,
+            },
+          },
+        },
+      },
     },
   });
   if (!cart || cart?.items.length === 0) {
@@ -35,7 +43,7 @@ const IdentificationPage = async () => {
     <div>
       <Header />
       <div className="space-y-4 px-5">
-        <Addresses shippingAddresses={shippingAddresses} />
+        <Addresses shippingAddresses={shippingAddresses} defaultShippingAddressId={cart.shippingAddress?.id || null} />
       </div>
       <div className="mt-12">
         <Footer />
