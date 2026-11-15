@@ -1,9 +1,11 @@
+import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { db } from "@/db";
+import { shippingAddressTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 import Addresses from "./components/addresses";
@@ -25,12 +27,15 @@ const IdentificationPage = async () => {
   if (!cart || cart?.items.length === 0) {
     redirect("/");
   }
+  const shippingAddresses = await db.query.shippingAddressTable.findMany({
+    where: eq(shippingAddressTable.userId, session.user.id),
+  });
 
   return (
     <div>
       <Header />
       <div className="space-y-4 px-5">
-        <Addresses />
+        <Addresses shippingAddresses={shippingAddresses} />
       </div>
       <div className="mt-12">
         <Footer />
