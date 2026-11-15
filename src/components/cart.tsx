@@ -2,11 +2,11 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { ShoppingBasketIcon } from "lucide-react";
-import Image from "next/image";
 
 import { getCart } from "@/actions/get-cart";
 import { Button } from "@/components/ui/button";
 
+import CartItem from "./cart-item";
 import {
   Sheet,
   SheetContent,
@@ -32,21 +32,24 @@ export const Cart = () => {
         <SheetHeader>
           <SheetTitle>Carrinho</SheetTitle>
         </SheetHeader>
-        <div>
-          {cartIsLoading && <div>Carregando...</div>}
-          {cart?.items.map((item) => (
-            <div key={item.id}>
-              <Image
-                src={item.productVariant.imageUrl}
-                alt={item.productVariant.product.name}
-                width={100}
-                height={100}
-              />
-              <div>
-                <h3> {item.productVariant.product.name} </h3>
-              </div>
+
+        <div className="flex h-full flex-col px-5 pb-5">
+          <div className="flex h-full max-h-full flex-col overflow-hidden">
+            <div className="flex h-full flex-col gap-8">
+              {cartIsLoading && <div>Carregando...</div>}
+              {cart?.items.map((item) => (
+                <CartItem
+                  key={item.id}
+                  id={item.id}
+                  productName={item.productVariant.product.name}
+                  productVariantName={item.productVariant.name}
+                  productVariantImageUrl={item.productVariant.imageUrl}
+                  productVariantPriceInCents={item.productVariant.priceInCents}
+                  quantity={item.quantity}
+                />
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </SheetContent>
     </Sheet>
