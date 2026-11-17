@@ -34,30 +34,29 @@ export const Cart = () => {
         <SheetHeader>
           <SheetTitle>Carrinho</SheetTitle>
         </SheetHeader>
+        {cart?.items && cart?.items.length > 0 ? (
+          <div className="flex h-full flex-col px-5 pb-5">
+            <div className="flex h-full max-h-full flex-col overflow-hidden">
+              <ScrollArea className="h-full">
+                <div className="flex h-full flex-col gap-8">
+                  {cart?.items.map((item) => (
+                    <CartItem
+                      key={item.id}
+                      id={item.id}
+                      productVariantId={item.productVariant.id}
+                      productName={item.productVariant.product.name}
+                      productVariantName={item.productVariant.name}
+                      productVariantImageUrl={item.productVariant.imageUrl}
+                      productVariantPriceInCents={
+                        item.productVariant.priceInCents
+                      }
+                      quantity={item.quantity}
+                    />
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
 
-        <div className="flex h-full flex-col px-5 pb-5">
-          <div className="flex h-full max-h-full flex-col overflow-hidden">
-            <ScrollArea className="h-full">
-              <div className="flex h-full flex-col gap-8">
-                {cart?.items.map((item) => (
-                  <CartItem
-                    key={item.id}
-                    id={item.id}
-                    productVariantId={item.productVariant.id}
-                    productName={item.productVariant.product.name}
-                    productVariantName={item.productVariant.name}
-                    productVariantImageUrl={item.productVariant.imageUrl}
-                    productVariantPriceInCents={
-                      item.productVariant.priceInCents
-                    }
-                    quantity={item.quantity}
-                  />
-                ))}
-              </div>
-            </ScrollArea>
-          </div>
-
-          {cart?.items && cart?.items.length > 0 && (
             <div className="flex flex-col gap-4">
               <Separator />
 
@@ -89,8 +88,12 @@ export const Cart = () => {
                 </Link>
               </Button>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex h-full flex-col px-5 pb-5">
+            <h2 className="font-semibold">Seu carrinho está vazio.</h2>
+          </div>
+        )}
       </SheetContent>
     </Sheet>
   );
