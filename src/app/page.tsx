@@ -1,8 +1,6 @@
 import Image from "next/image";
 
 import CategorySelector from "@/components/category-selector";
-import Footer from "@/components/footer";
-import Header from "@/components/header";
 import ProductList from "@/components/product-list";
 import { getCategories } from "@/data/categories/get";
 import {
@@ -19,8 +17,6 @@ const Home = async () => {
 
   return (
     <div>
-      <Header />
-
       <div className="space-y-6">
         <div className="px-5">
           <Image
@@ -51,8 +47,6 @@ const Home = async () => {
         </div>
 
         <ProductList products={newlyCreatedProducts} title="Novos produtos" />
-
-        <Footer />
       </div>
     </div>
   );

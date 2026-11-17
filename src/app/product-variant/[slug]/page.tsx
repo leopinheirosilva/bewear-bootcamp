@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import Footer from "@/components/footer";
-import Header from "@/components/header";
 import ProductList from "@/components/product-list";
 import {
   getProductsByCategory,
@@ -30,7 +28,6 @@ const ProductVariantPage = async ({ params }: ProductVariantPageProps) => {
 
   return (
     <>
-      <Header />
       <div className="flex flex-col space-y-6">
         <Image
           src={productVariant.imageUrl}
@@ -69,8 +66,6 @@ const ProductVariantPage = async ({ params }: ProductVariantPageProps) => {
         </div>
 
         <ProductList products={likelyProducts} title="Talves você goste" />
-
-        <Footer />
       </div>
     </>
   );

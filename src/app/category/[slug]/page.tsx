@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 
-import Header from "@/components/header";
 import ProductItem from "@/components/product-item";
 import { getCategoryBySlug } from "@/data/categories/get";
 import { getProductsByCategory } from "@/data/products/get";
@@ -18,7 +17,6 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
   const products = await getProductsByCategory(category.id);
   return (
     <>
-      <Header />
       <div className="space-y-6 px-5">
         <h2 className="text-xl font-semibold">{category.name}</h2>
         <div className="grid grid-cols-2 gap-4">

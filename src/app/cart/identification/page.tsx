@@ -1,8 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import Footer from "@/components/footer";
-import Header from "@/components/header";
 import { getCartByUserId } from "@/data/cart/get";
 import { getShippingAddressesByUserId } from "@/data/shipping-addresses/get";
 import { auth } from "@/lib/auth";
@@ -29,7 +27,6 @@ const IdentificationPage = async () => {
 
   return (
     <div>
-      <Header />
       <div className="space-y-4 px-5">
         <Addresses
           shippingAddresses={shippingAddresses}
@@ -50,7 +47,6 @@ const IdentificationPage = async () => {
         />
       </div>
       <div className="mt-12">
-        <Footer />
       </div>
     </div>
   );
