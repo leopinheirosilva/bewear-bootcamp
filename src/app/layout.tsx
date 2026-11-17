@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: "Bewear",
   description: "e-commerce",
   icons: {
-    icon: "/public/favicon.svg",
+    icon: "/favicon.svg",
   },
 };
 
