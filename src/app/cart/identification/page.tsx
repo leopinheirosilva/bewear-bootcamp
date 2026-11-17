@@ -1,11 +1,10 @@
-import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import { db } from "@/db";
-import { shippingAddressTable } from "@/db/schema";
+import { getCartByUserId } from "@/data/cart/get";
+import { getShippingAddressesByUserId } from "@/data/shipping-addresses/get";
 import { auth } from "@/lib/auth";
 
 import CartSummary from "../components/cart-summary";
@@ -18,27 +17,11 @@ const IdentificationPage = async () => {
   if (!session?.user.id) {
     redirect("/");
   }
-  const cart = await db.query.cartTable.findFirst({
-    where: (cart, { eq }) => eq(cart.userId, session.user.id),
-    with: {
-      shippingAddress: true,
-      items: {
-        with: {
-          productVariant: {
-            with: {
-              product: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const cart = await getCartByUserId(session.user.id);
   if (!cart || cart?.items.length === 0) {
     redirect("/");
   }
-  const shippingAddresses = await db.query.shippingAddressTable.findMany({
-    where: eq(shippingAddressTable.userId, session.user.id),
-  });
+  const shippingAddresses = await getShippingAddressesByUserId(session.user.id);
   const cartTotalInCents = cart.items.reduce(
     (acc, item) => acc + item.productVariant.priceInCents * item.quantity,
     0,

@@ -1,12 +1,13 @@
-import { eq } from "drizzle-orm";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import ProductList from "@/components/product-list";
-import { db } from "@/db";
-import { productTable, productVariantTable } from "@/db/schema";
+import {
+  getProductsByCategory,
+  getProductVariantBySlug,
+} from "@/data/products/get";
 import { formatCentsToBRL } from "@/helpers/currency";
 
 import ProductActions from "./components/product-actions";
@@ -18,26 +19,14 @@ interface ProductVariantPageProps {
 
 const ProductVariantPage = async ({ params }: ProductVariantPageProps) => {
   const { slug } = await params;
-  const productVariant = await db.query.productVariantTable.findFirst({
-    where: eq(productVariantTable.slug, slug),
-    with: {
-      product: {
-        with: {
-          variants: true,
-        },
-      },
-    },
-  });
+  const productVariant = await getProductVariantBySlug(slug);
   if (!productVariant) {
     return notFound();
   }
 
-  const likelyProducts = await db.query.productTable.findMany({
-    where: eq(productTable.categoryId, productVariant.product.categoryId),
-    with: {
-      variants: true,
-    },
-  });
+  const likelyProducts = await getProductsByCategory(
+    productVariant.product.categoryId,
+  );
 
   return (
     <>
