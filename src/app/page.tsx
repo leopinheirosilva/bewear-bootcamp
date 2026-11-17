@@ -17,7 +17,7 @@ const Home = async () => {
 
   return (
     <div>
-      <div className="space-y-6">
+      <div className="mt-5 space-y-6">
         <div className="px-5">
           <Image
             src="/banner-01.png"

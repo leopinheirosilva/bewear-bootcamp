@@ -1,8 +1,8 @@
 "use client";
 
-import { House, LogInIcon, LogOutIcon, Truck } from "lucide-react";
+import { House, LogInIcon, LogOutIcon, MenuIcon, Truck } from "lucide-react";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 
 import { categoryTable } from "@/db/schema";
 import { useCategories } from "@/hooks/queries/use-categories";
@@ -11,20 +11,13 @@ import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 interface MenuSheetProps {
-  triggerButton?: ReactNode;
   categories?: (typeof categoryTable.$inferSelect)[];
 }
 
-const MenuSheet = ({ triggerButton, categories }: MenuSheetProps) => {
+const MenuSheet = ({ categories }: MenuSheetProps) => {
   const [open, setOpen] = useState(false);
   const { data: session } = authClient.useSession();
   const { data: categoriesData } = useCategories({
@@ -36,12 +29,13 @@ const MenuSheet = ({ triggerButton, categories }: MenuSheetProps) => {
   return (
     <>
       <Sheet open={open} onOpenChange={setOpen}>
-        {triggerButton && <SheetTrigger asChild>{triggerButton}</SheetTrigger>}
+        <SheetTrigger asChild>
+          <Button variant="outline" size="icon">
+            <MenuIcon />
+          </Button>
+        </SheetTrigger>
         <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Menu</SheetTitle>
-          </SheetHeader>
-          <div className="space-y-5 px-5">
+          <div className="mt-10 space-y-5 px-5">
             {session?.user ? (
               <>
                 <div className="flex flex-col justify-between space-y-6">
@@ -78,16 +72,16 @@ const MenuSheet = ({ triggerButton, categories }: MenuSheetProps) => {
                   </Link>
                   <Separator />
                   <div className="flex flex-col gap-6">
-                    <h2 className="font-semibold text-muted-foreground">CATEGORIAS</h2>
+                    <h2 className="text-muted-foreground font-semibold">
+                      CATEGORIAS
+                    </h2>
                     {availableCategories.map((category) => (
                       <Link
                         key={category.id}
                         href={`/category/${category.slug}`}
                         onClick={() => setOpen(false)}
                       >
-                        <h2 className=" font-semibold">
-                          {category.name}
-                        </h2>
+                        <h2 className="font-semibold">{category.name}</h2>
                       </Link>
                     ))}
                   </div>
