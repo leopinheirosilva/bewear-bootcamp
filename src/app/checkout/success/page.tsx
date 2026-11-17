@@ -18,7 +18,7 @@ const CheckoutSuccessPage = () => {
       <Dialog open={true} onOpenChange={() => {}}>
         <DialogContent className="text-center">
           <Image
-            src="/illustration.svg"
+            src="/checkout-success.svg"
             alt="Success"
             width={300}
             height={300}
