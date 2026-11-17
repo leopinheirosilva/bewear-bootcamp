@@ -2,9 +2,9 @@
 
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useCartSheet } from "@/contexts/cart-sheet-context";
 import { formatCentsToBRL } from "@/helpers/currency";
 import { useCart } from "@/hooks/queries/use-cart";
 
@@ -20,11 +20,11 @@ import {
 } from "./ui/sheet";
 
 export const Cart = () => {
-  const [open, setOpen] = useState(false);
+  const { isOpen, setIsOpen, closeCart } = useCartSheet();
   const { data: cart } = useCart();
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon">
           <ShoppingBag />
@@ -80,10 +80,7 @@ export const Cart = () => {
               </div>
 
               <Button className="mt-5 rounded-full" asChild>
-                <Link
-                  href="/cart/identification"
-                  onClick={() => setOpen(false)}
-                >
+                <Link href="/cart/identification" onClick={() => closeCart()}>
                   Finalizar compra
                 </Link>
               </Button>
@@ -91,7 +88,7 @@ export const Cart = () => {
           </div>
         ) : (
           <div className="flex h-full flex-col px-5 pb-5">
-            <h2 className="font-semibold">Seu carrinho está vazio.</h2>
+            <h2>Seu carrinho está vazio.</h2>
           </div>
         )}
       </SheetContent>

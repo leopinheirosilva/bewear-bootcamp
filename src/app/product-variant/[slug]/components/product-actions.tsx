@@ -1,9 +1,12 @@
 "use client";
 
-import { MinusIcon, PlusIcon } from "lucide-react";
+import { Loader2, MinusIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { useCartSheet } from "@/contexts/cart-sheet-context";
+import { useAddCartProduct } from "@/hooks/mutations/use-add-cart-product";
 
 import AddToCartButton from "./add-to-cart-button";
 
@@ -13,11 +16,33 @@ interface ProductActionsProps {
 
 const ProductActions = ({ productVariantId }: ProductActionsProps) => {
   const [quantity, setQuantity] = useState(1);
+  const { openCart } = useCartSheet();
+  const { mutate: addToCart, isPending } = useAddCartProduct();
+
   const handleDecrement = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
   };
   const handleIncrement = () => {
     setQuantity((prev) => prev + 1);
+  };
+
+  const handleBuyNow = () => {
+    addToCart(
+      {
+        productVariantId,
+        quantity,
+      },
+      {
+        onSuccess: () => {
+          openCart();
+        },
+        onError: () => {
+          toast.error(
+            "Erro ao adicionar produto ao carrinho. Tente novamente.",
+          );
+        },
+      },
+    );
   };
 
   return (
@@ -41,7 +66,13 @@ const ProductActions = ({ productVariantId }: ProductActionsProps) => {
           productVariantId={productVariantId}
           quantity={quantity}
         />
-        <Button className="rounded-full" size="lg">
+        <Button
+          className="rounded-full"
+          size="lg"
+          onClick={handleBuyNow}
+          disabled={isPending}
+        >
+          {isPending && <Loader2 className="animate-spin" />}
           Comprar agora
         </Button>
       </div>

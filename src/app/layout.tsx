@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
+import { CartSheetProvider } from "@/contexts/cart-sheet-context";
 import ReactQueryProvider from "@/providers/react-query";
 
 const geistSans = Geist({
@@ -44,9 +45,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ReactQueryProvider>
-            <Header />
-            <main className="mb-10 flex-1">{children}</main>
-            <Footer />
+            <CartSheetProvider>
+              <Header />
+              <main className="mb-10 flex-1">{children}</main>
+              <Footer />
+            </CartSheetProvider>
           </ReactQueryProvider>
           <Toaster />
         </ThemeProvider>
