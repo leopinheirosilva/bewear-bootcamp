@@ -34,11 +34,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
         <ReactQueryProvider>
           <Header />
-          {children}
+          <main className="mb-10 flex-1">{children}</main>
           <Footer />
         </ReactQueryProvider>
         <Toaster />
